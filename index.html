@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Zora Labs — studio inżynierii obrazu i dźwięku. Interaktywne doświadczenie scrollytellingowe prezentujące dekonstrukcję długich nagrań do form krótkometrażowych.">
+  <meta name="theme-color" content="#050505">
+  <title>Zora Labs — Inżynieria Obrazu i Narracji Krótkometrażowej</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/boot.js"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Przejdź bezpośrednio do treści</a>
+
+  <!-- Studio Shutter Preloader (Fast, skippable, disabled on reduced-motion) -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader-shutter shutter-top"></div>
+    <div class="preloader-shutter shutter-bottom"></div>
+    <div class="preloader-hud">
+      <div class="preloader-meta">
+        <span>ZORA LABS // SILNIK OPTYCZNY 4.2</span>
+        <span id="preloaderStatus">INICJALIZACJA SCENY 3D</span>
+      </div>
+      <div class="preloader-counter-row">
+        <span class="preloader-num" id="preloaderNum">000</span>
+        <span class="preloader-unit">%</span>
+      </div>
+      <div class="preloader-bar-track">
+        <div class="preloader-bar-fill" id="preloaderFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Persistent Full-Viewport 3D WebGL Spatial Sculpture -->
+  <div class="webgl-backdrop" aria-hidden="true">
+    <canvas id="webglCanvas"></canvas>
+    <div class="webgl-vignette"></div>
+  </div>
+
+  <!-- Custom Magnetic Precision Cursor (Desktop fine pointer only) -->
+  <div class="cursor-lens" id="cursorLens" aria-hidden="true">
+    <span class="cursor-lens-text" id="cursorLensText">ZBADAJ</span>
+  </div>
+
+  <!-- Right-Edge Cinema Filmstrip Scroll Ruler -->
+  <aside class="filmstrip-ruler" aria-hidden="true">
+    <div class="ruler-track">
+      <div class="ruler-fill" id="rulerFill"></div>
+    </div>
+    <span class="ruler-pct" id="rulerPct">00%</span>
+  </aside>
+
+  <!-- Floating Minimalist Navigation (Refactory Exact Style) -->
+  <header class="site-header" id="top">
+    <div class="header-inner">
+      <div class="brand-cluster">
+        <a href="#top" class="brand-link" data-magnetic aria-label="Zora Labs — początek strony">
+          <img src="assets/img/zora-logo.svg" alt="Zora Labs" class="brand-svg" width="112" height="42">
+        </a>
+        <div class="header-timecode" aria-hidden="true">
+          <span class="tc-dot"></span>
+          <span id="globalTimecode">TC 00:00:00:00</span>
+        </div>
+      </div>
+
+      <nav class="nav-dock" aria-label="Nawigacja główna">
+        <ul class="nav-list">
+          <li><a href="#proces" class="nav-item is-active" data-nav="proces">Proces</a></li>
+          <li><a href="#manifest" class="nav-item" data-nav="manifest">Manifest</a></li>
+          <li><a href="#archiwum" class="nav-item" data-nav="archiwum">Sekwencje</a></li>
+          <li><a href="#system" class="nav-item" data-nav="system">Studio</a></li>
+          <li><a href="#dane" class="nav-item" data-nav="dane">Skala</a></li>
+          <li><a href="#specyfikacja" class="nav-item" data-nav="specyfikacja">FAQ</a></li>
+        </ul>
+
+        <button type="button" class="theme-pill" id="themeToggle" aria-label="Przełącz motyw kolorystyczny" title="Przełącz motyw Onyx / Papier">
+          <span class="theme-indicator" aria-hidden="true"></span>
+          <span id="themeLabel">Onyx</span>
+        </button>
+
+        <a href="#kontakt" class="nav-cta" data-magnetic>
+          <span>Kontakt</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </nav>
+
+      <div class="mobile-controls">
+        <button type="button" class="theme-pill mobile-theme-pill" id="themeToggleMobile" aria-label="Przełącz motyw kolorystyczny">
+          <span class="theme-indicator" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="menu-btn" id="menuToggle" aria-expanded="false" aria-controls="mobileDrawer" aria-label="Otwórz menu nawigacyjne">
+          <span id="menuToggleLabel">Menu</span>
+          <span class="menu-bars" aria-hidden="true"><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Fullscreen Architectural Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+      <div class="mobile-drawer-inner">
+        <div class="drawer-top-meta">
+          <span>INDEKS ROZDZIAŁÓW</span>
+          <span>ZORA LABS // PL</span>
+        </div>
+        <ul class="drawer-links">
+          <li><a href="#proces"><span class="d-num">01</span> Proces 3D</a></li>
+          <li><a href="#manifest"><span class="d-num">02</span> Manifest redakcyjny</a></li>
+          <li><a href="#archiwum"><span class="d-num">03</span> Talia sekwencji (001–004)</a></li>
+          <li><a href="#system"><span class="d-num">04</span> Stół montażowy (Poziomo)</a></li>
+          <li><a href="#dane"><span class="d-num">05</span> Parametry i skala</a></li>
+          <li><a href="#specyfikacja"><span class="d-num">06</span> Specyfikacja techniczna</a></li>
+          <li><a href="#kontakt"><span class="d-num">07</span> Kontakt i wdrożenia</a></li>
+        </ul>
+        <div class="drawer-bottom-meta">
+          <a href="https://zora-labs.com" target="_blank" rel="noopener noreferrer">zora-labs.com ↗</a>
+          <span>Warszawa · 52.23°N</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- =====================================================================
+         ACT I: PINNED 3D + CINEMA APERTURE SCROLLYTELLING (#proces)
+         ===================================================================== -->
+    <section class="act-hero" id="proces" aria-labelledby="hero-title">
+      <div class="hero-pin-stage" id="heroPinStage">
+        <!-- Subtle Optical Registration Marks -->
+        <div class="stage-crosshairs" aria-hidden="true">
+          <span class="reg-mark rm-tl">+</span>
+          <span class="reg-mark rm-tr">+</span>
+          <span class="reg-mark rm-bl">+</span>
+          <span class="reg-mark rm-br">+</span>
+        </div>
+
+        <!-- Centered Refactory-Style Opening Statement (scrolls into Z-space) -->
+        <div class="hero-opening" id="heroOpening">
+          <div class="refactory-badge" data-hero-intro>
+            <img src="assets/img/favicon.svg" alt="" class="badge-icon" width="18" height="18" aria-hidden="true">
+            <span class="badge-copy">Twój surowy zapis. Nasza forma.</span>
+            <a href="#archiwum" class="badge-action">ZOBACZ PRÓBKI <span aria-hidden="true">→</span></a>
+          </div>
+
+          <h1 class="hero-statement" id="hero-title">
+            <span class="line-mask"><span class="line-inner" data-hero-line>Przekształcamy wielogodzinne zapisy rozmów</span></span>
+            <span class="line-mask"><span class="line-inner" data-hero-line>w autonomiczne formy krótkometrażowe,</span></span>
+            <span class="line-mask"><span class="line-inner" data-hero-line>gotowe do natychmiastowej emisji.</span></span>
+          </h1>
+
+          <p class="hero-subcopy" data-hero-intro>
+            Od surowego strumienia studyjnego po pionowy kadr 9:16 — analizujemy rytm sporu, ruch mówcy i akustykę przestrzeni, wydobywając najmocniejsze momenty nagrania.
+          </p>
+        </div>
+
+        <!-- Central Morphing Cinema Aperture (Emerges on scroll: 16:9 -> 9:16) -->
+        <div class="cinema-aperture-wrap" id="apertureWrap" aria-hidden="true">
+          <div class="cinema-aperture" id="cinemaAperture">
+            <div class="aperture-video-wide" id="apertureWide">
+              <video
+                src="assets/media/zora-reel-16x9.mp4#t=4"
+                poster="assets/media/shot-structure.png"
+                muted
+                loop
+                playsinline
+                autoplay
+              ></video>
+            </div>
+            <div class="aperture-video-vert" id="apertureVert">
+              <video
+                src="assets/media/clip-vertical-01.mp4#t=2"
+                poster="assets/media/shot-editor.png"
+                muted
+                loop
+                playsinline
+                autoplay
+              ></video>
+            </div>
+
+            <!-- Live Optical Vector HUD inside Aperture -->
+            <div class="aperture-hud">
+              <div class="aperture-top-row">
+                <span class="ap-chip" id="apModeChip">RAW // 16:9 STREAM</span>
+                <span class="ap-chip" id="apFrameChip">FRM 0001</span>
+              </div>
+              <div class="aperture-crop-guide" id="apCropGuide">
+                <i></i><i></i><i></i><i></i>
+              </div>
+              <div class="aperture-eq" id="apEq">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Scroll-Scrubbed Spatial Narrative Chapters (01 - 04) -->
+        <div class="hero-chapters">
+          <article class="spatial-chapter ch-pos-left" id="heroCh1">
+            <span class="ch-tag">01 / ROZBIÓR MATERIAŁU</span>
+            <h2 class="ch-heading">Rozszczepiamy surowy zapis na warstwy.</h2>
+            <p class="ch-body">
+              Zanim powstanie pierwsze cięcie, silnik oddziela głosy rozmówców, bada gęstość informacyjną zdań i odrzuca studyjny szum.
+            </p>
+            <div class="ch-telemetry">
+              <span>DETEKCJA: WIELOŚCIEŻKOWA</span>
+              <span>WEJŚCIE: DO 4K 60FPS</span>
+            </div>
+          </article>
+
+          <article class="spatial-chapter ch-pos-right" id="heroCh2">
+            <span class="ch-tag">02 / KONTEKST SEMANTYCZNY</span>
+            <h2 class="ch-heading">Szukamy dramaturgii, nie przypadkowych słów.</h2>
+            <p class="ch-body">
+              Model rozpoznaje momenty zwrotne argumentacji — buduje klip od intrygującego otwarcia aż po zamkniętą, czytelną puentę.
+            </p>
+            <div class="ch-telemetry">
+              <span>JĘZYKI: 90+ NATYWNIE</span>
+              <span>ANALIZA: PROZODIA + SENS</span>
+            </div>
+          </article>
+
+          <article class="spatial-chapter ch-pos-left" id="heroCh3">
+            <span class="ch-tag">03 / GEOMETRIA KADRU</span>
+            <h2 class="ch-heading">Horyzont 16:9 przechodzi płynnie w pion 9:16.</h2>
+            <p class="ch-body">
+              Wektorowe śledzenie twarzy prowadzi wirtualną kamerę za aktywnym mówcą lub dzieli ekran na dwie osoby podczas dynamicznej wymiany zdań.
+            </p>
+            <div class="ch-telemetry">
+              <span>RUCH: KRZYWE BÉZIERA</span>
+              <span>UKŁAD: SINGLE / SPLIT</span>
+            </div>
+          </article>
+
+          <article class="spatial-chapter ch-pos-right" id="heroCh4">
+            <span class="ch-tag">04 / GOTOWOŚĆ EMISYJNA</span>
+            <h2 class="ch-heading">Rytmiczna typografia i dźwięk -14 LUFS.</h2>
+            <p class="ch-body">
+              Każda wyodrębniona sekwencja otrzymuje napisy zsynchronizowane co do sylaby oraz znormalizowany miks audio gotowy do publikacji.
+            </p>
+            <div class="ch-telemetry">
+              <span>NORMA: EBU R128</span>
+              <span>EKSPORT: MP4 + SRT</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Bottom Stage Bar -->
+        <div class="hero-bottom-hud">
+          <div class="scroll-cue" id="scrollCue">
+            <span class="scroll-cue-track"><span class="scroll-cue-runner"></span></span>
+            <span>Przewijaj, aby przekształcić obiekt</span>
+          </div>
+
+          <div class="chapter-stepper" role="group" aria-label="Skocz do etapu animacji">
+            <button type="button" class="step-pill is-active" data-hero-step="0">00</button>
+            <button type="button" class="step-pill" data-hero-step="1">01</button>
+            <button type="button" class="step-pill" data-hero-step="2">02</button>
+            <button type="button" class="step-pill" data-hero-step="3">03</button>
+            <button type="button" class="step-pill" data-hero-step="4">04</button>
+          </div>
+
+          <div class="hero-stage-readout" id="heroStageReadout">ETAP 00 / INICJACJA</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT II: KINETIC WORD-SCRUB MANIFESTO & EXPANDING CINEMA PORTAL (#manifest)
+         ===================================================================== -->
+    <section class="act-manifest" id="manifest" aria-labelledby="manifest-label">
+      <div class="manifest-text-stage">
+        <div class="container">
+          <div class="section-eyebrow">
+            <span id="manifest-label">[ 01 / FILOZOFIA MONTAŻU ]</span>
+            <span>RUCH STEROWANY PRZEWIJANIEM</span>
+          </div>
+
+          <div class="manifest-parallax-wrap">
+            <!-- Floating Multi-Speed Parallax Studio Previews -->
+            <figure class="floating-shard shard-left" data-parallax="-95" aria-hidden="true">
+              <img src="assets/media/shot-structure.png" alt="" loading="lazy" width="520" height="325">
+              <figcaption>ANALIZA STRUKTURALNA</figcaption>
+            </figure>
+
+            <h2 class="scrub-paragraph" id="scrubManifesto">
+              Większość wartościowych rozmów ginie w dwugodzinnych archiwach. Zora Labs nie zastępuje redaktora — zdejmuje z niego mechaniczny ciężar przeszukiwania osi czasu, zamieniając surowy zapis w precyzyjną architekturę krótkich form.
+            </h2>
+
+            <figure class="floating-shard shard-right" data-parallax="115" aria-hidden="true">
+              <img src="assets/media/shot-audio.png" alt="" loading="lazy" width="520" height="325">
+              <figcaption>MACIERZ DŹWIĘKOWA DSP</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expanding Clip-Path Cinema Curtain Portal -->
+      <div class="portal-pin-wrap" id="portalPinWrap">
+        <div class="portal-window" id="portalWindow" data-cursor="FILM">
+          <video
+            class="portal-video"
+            src="assets/media/zora-reel-16x9.mp4#t=2"
+            poster="assets/media/shot-editor.png"
+            muted
+            loop
+            playsinline
+            autoplay
+          ></video>
+          <div class="portal-overlay">
+            <div class="portal-caption-top">
+              <span>ZORA STUDIO // ŚRODOWISKO PRODUKCYJNE</span>
+              <span>PRZEGLĄDARKOWY SILNIK NLE</span>
+            </div>
+            <div class="portal-caption-bottom">
+              <p>Od pojedynczego nagrania do kompletnej serii wydawniczej w mniej niż trzy minuty.</p>
+              <a href="https://zora-labs.com" target="_blank" rel="noopener noreferrer" class="portal-cta" data-magnetic>
+                Otwórz platformę zora-labs.com ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT III: 3D STACKING EXHIBITION DECK (#archiwum — 0 0 1 to 0 0 4)
+         ===================================================================== -->
+    <section class="act-deck" id="archiwum" aria-labelledby="deck-heading">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>[ 02 / ARCHIWUM WYODRĘBNIONYCH FORM ]</span>
+          <span id="deckCounter">AKTYWNE KARTY: 0 0 4 / 0 0 4</span>
+        </div>
+
+        <div class="deck-intro-grid">
+          <h2 class="display-h2 js-reveal-lines" id="deck-heading">
+            Studia przypadków z rzeczywistego potoku Zora Labs.
+          </h2>
+          <p class="editorial-copy js-reveal-fade">
+            Każda karta w poniższej talii prezentuje autentyczny materiał wygenerowany przez nasz silnik. Przewijaj, aby nakładać kolejne tablice ekspozycyjne, filtruj kategorie lub otwórz dowolną sekwencję w pełnoekranowym inspektorze.
+          </p>
+        </div>
+
+        <!-- Custom JS Feature #1: Live Category Filter & Search -->
+        <div class="deck-toolbar" role="region" aria-label="Filtrowanie talii sekwencji">
+          <div class="filter-group" role="group" aria-label="Kategorie sekwencji">
+            <button type="button" class="deck-filter is-active" data-filter="all">Wszystkie (04)</button>
+            <button type="button" class="deck-filter" data-filter="vertical">Pionowe 9:16</button>
+            <button type="button" class="deck-filter" data-filter="editorial">Montaż 16:9</button>
+            <button type="button" class="deck-filter" data-filter="acoustic">Inżynieria DSP</button>
+          </div>
+
+          <div class="deck-search-box">
+            <label for="deckSearch" class="sr-only">Wyszukaj sekwencję po słowie kluczowym</label>
+            <input
+              type="search"
+              id="deckSearch"
+              class="deck-search-input"
+              placeholder="Filtruj po temacie lub kodeku..."
+              autocomplete="off"
+            >
+          </div>
+        </div>
+
+        <!-- 3D Overlapping Stacking Cards Container -->
+        <div class="stack-deck" id="stackDeck">
+          <!-- Card 0 0 1 -->
+          <article class="stack-card" data-category="vertical" data-keywords="cyfrowe euro finanse debata pion 9:16 napisy">
+            <div class="stack-card-inner">
+              <div class="card-meta-col">
+                <div class="card-num-bar">
+                  <span class="card-index">0 0 1</span>
+                  <span class="card-pill">SEKWENCJA 9:16 · DEBATA</span>
+                </div>
+                <h3 class="card-title">Cyfrowe Euro a suwerenność europejskich płatności</h3>
+                <p class="card-desc">
+                  Wyodrębnione automatycznie z 74-minutowej debaty ekonomicznej. Kamera wektorowa utrzymuje mówcę w osi pionowej, a dwujęzyczna warstwa napisów akcentuje kluczowe argumenty.
+                </p>
+                <dl class="card-specs">
+                  <div><dt>WEJŚCIE</dt><dd>Debata studyjna 4K (01:14:22)</dd></div>
+                  <div><dt>WYJŚCIE</dt><dd>1080 × 1920 px · 60 fps · H.264</dd></div>
+                  <div><dt>CZAS ANALIZY</dt><dd>42 sekundy (potok chmurowy)</dd></div>
+                </dl>
+                <button
+                  type="button"
+                  class="card-inspect-btn"
+                  data-magnetic
+                  data-modal-type="video"
+                  data-modal-src="assets/media/clip-vertical-01.mp4"
+                  data-modal-title="0 0 1 — Cyfrowe Euro a suwerenność płatności"
+                  data-modal-meta="9:16 VERTICAL MASTER · -14 LUFS · 60 FPS"
+                >
+                  <span>Otwórz sekwencję z dźwiękiem</span>
+                  <span aria-hidden="true">↗</span>
+                </button>
+              </div>
+
+              <div class="card-visual-col" data-cursor="ODTWÓRZ">
+                <figure class="card-collage">
+                  <div class="collage-phone">
+                    <video
+                      src="assets/media/clip-vertical-01.mp4"
+                      poster="assets/media/shot-editor.png"
+                      muted
+                      loop
+                      playsinline
+                      autoplay
+                    ></video>
+                  </div>
+                  <div class="collage-backdrop">
+                    <img
+                      src="assets/media/shot-editor.png"
+                      alt="Widok stołu montażowego Zora Studio podczas edycji klipu o Cyfrowym Euro"
+                      loading="lazy"
+                      width="960"
+                      height="600"
+                    >
+                  </div>
+                </figure>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 0 0 2 -->
+          <article class="stack-card" data-category="vertical" data-keywords="podcast rozmowa śledzenie twarzy transkrypcja sylaby">
+            <div class="stack-card-inner">
+              <div class="card-meta-col">
+                <div class="card-num-bar">
+                  <span class="card-index">0 0 2</span>
+                  <span class="card-pill">ŚLEDZENIE MÓWCY · PODCAST</span>
+                </div>
+                <h3 class="card-title">Izolacja wątku narracyjnego w rozmowie studyjnej</h3>
+                <p class="card-desc">
+                  Przykład wycięcia spójnej myśli z wielowątkowego podcastu. Krzywe Béziera eliminują szarpnięcia kadru, a synchronizacja sylabowa prowadzi wzrok widza bez zasłaniania twarzy.
+                </p>
+                <dl class="card-specs">
+                  <div><dt>WEJŚCIE</dt><dd>Podcast wideo (02:05:10, 1080p)</dd></div>
+                  <div><dt>STABILIZACJA</dt><dd>Sub-pikselowe tłumienie drgań</dd></div>
+                  <div><dt>TYPOGRAFIA</dt><dd>Rytmiczna warstwa sylabowa PL</dd></div>
+                </dl>
+                <button
+                  type="button"
+                  class="card-inspect-btn"
+                  data-magnetic
+                  data-modal-type="video"
+                  data-modal-src="assets/media/clip-vertical-02.mp4"
+                  data-modal-title="0 0 2 — Izolacja wątku narracyjnego w podcaście"
+                  data-modal-meta="9:16 VERTICAL · ADAPTIVE TRACKING · PL"
+                >
+                  <span>Otwórz sekwencję z dźwiękiem</span>
+                  <span aria-hidden="true">↗</span>
+                </button>
+              </div>
+
+              <div class="card-visual-col" data-cursor="ODTWÓRZ">
+                <figure class="card-collage">
+                  <div class="collage-phone">
+                    <video
+                      src="assets/media/clip-vertical-02.mp4"
+                      poster="assets/media/shot-text.png"
+                      muted
+                      loop
+                      playsinline
+                      autoplay
+                    ></video>
+                  </div>
+                  <div class="collage-backdrop">
+                    <img
+                      src="assets/media/shot-text.png"
+                      alt="Moduł edycji transkrypcji i napisów w Zora Studio"
+                      loading="lazy"
+                      width="960"
+                      height="600"
+                    >
+                  </div>
+                </figure>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 0 0 3 -->
+          <article class="stack-card" data-category="editorial" data-keywords="oś czasu b-roll struktura montaż wielościeżkowy 16:9">
+            <div class="stack-card-inner">
+              <div class="card-meta-col">
+                <div class="card-num-bar">
+                  <span class="card-index">0 0 3</span>
+                  <span class="card-pill">POTOK WIELOŚCIEŻKOWY · 16:9</span>
+                </div>
+                <h3 class="card-title">Automatyczna rekonstrukcja osi czasu i dobór B-roll</h3>
+                <p class="card-desc">
+                  Kompletny przegląd procesu wewnątrz Zora Studio: od mapowania rozdziałów tematycznych, przez inteligentne nakładanie ujęć przebitkowych, po równoległy eksport wielu formatów.
+                </p>
+                <dl class="card-specs">
+                  <div><dt>SILNIK WIDEO</dt><dd>WebGL2 + akceleracja sprzętowa</dd></div>
+                  <div><dt>FORMATY</dt><dd>Równolegle 9:16, 1:1 oraz 16:9</dd></div>
+                  <div><dt>INTEGRACJA</dt><dd>Eksport XML / EDL do NLE</dd></div>
+                </dl>
+                <button
+                  type="button"
+                  class="card-inspect-btn"
+                  data-magnetic
+                  data-modal-type="video"
+                  data-modal-src="assets/media/zora-reel-16x9.mp4"
+                  data-modal-title="0 0 3 — Pełny przebieg pracy w Zora Studio"
+                  data-modal-meta="16:9 STUDIO REEL · MULTI-TRACK PIPELINE"
+                >
+                  <span>Zobacz pełny film studyjny</span>
+                  <span aria-hidden="true">↗</span>
+                </button>
+              </div>
+
+              <div class="card-visual-col" data-cursor="POWIĘKSZ">
+                <figure class="card-wide-showcase">
+                  <video
+                    src="assets/media/zora-reel-16x9.mp4#t=5"
+                    poster="assets/media/shot-structure.png"
+                    muted
+                    loop
+                    playsinline
+                    autoplay
+                  ></video>
+                </figure>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 0 0 4 -->
+          <article class="stack-card" data-category="acoustic" data-keywords="audio dsp lufs dźwięk mastering pogłos ducking">
+            <div class="stack-card-inner">
+              <div class="card-meta-col">
+                <div class="card-num-bar">
+                  <span class="card-index">0 0 4</span>
+                  <span class="card-pill">INŻYNIERIA DŹWIĘKU · DSP</span>
+                </div>
+                <h3 class="card-title">Separacja akustyczna i normalizacja emisyjna -14 LUFS</h3>
+                <p class="card-desc">
+                   Oczyszczanie nagrań realizowanych poza studiem lektorskim. Algorytm tłumi pogłos pomieszczenia, wyrównuje głośność rozmówców i automatycznie wycisza tło muzyczne pod głosem.
+                </p>
+                <dl class="card-specs">
+                  <div><dt>STANDARD</dt><dd>EBU R128 · -14.0 LUFS / -1 dBTP</dd></div>
+                  <div><dt>FILTRY DSP</dt><dd>De-reverb + kompresja wielopasmowa</dd></div>
+                  <div><dt>ŚCIEŻKI</dt><dd>Niezależny miks Mowa / Muzyka / SFX</dd></div>
+                </dl>
+                <button
+                  type="button"
+                  class="card-inspect-btn"
+                  data-magnetic
+                  data-modal-type="image"
+                  data-modal-src="assets/media/shot-audio.png"
+                  data-modal-title="0 0 4 — Macierz akustyczna Zora Audio DSP"
+                  data-modal-meta="DSP ENGINE · TRUE PEAK LIMITER · AUTO-DUCKING"
+                >
+                  <span>Zbadaj interfejs akustyczny</span>
+                  <span aria-hidden="true">↗</span>
+                </button>
+              </div>
+
+              <div class="card-visual-col" data-cursor="INSPEKCJA">
+                <figure class="card-wide-showcase">
+                  <img
+                    src="assets/media/shot-audio.png"
+                    alt="Interfejs inżynierii dźwięku Zora Labs z kontrolą pasm i poziomów głośności"
+                    loading="lazy"
+                    width="1280"
+                    height="800"
+                  >
+                </figure>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <p class="deck-empty-state" id="deckEmpty" hidden>
+          Brak sekwencji odpowiadających wybranemu filtrowi.
+        </p>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT IV: PINNED HORIZONTAL SCROLL STUDIO PIPELINE (#system)
+         ===================================================================== -->
+    <section class="act-horizontal" id="system" aria-labelledby="system-heading">
+      <div class="horizontal-pin-wrap" id="horizontalPinWrap">
+        <div class="container horizontal-top-bar">
+          <div class="section-eyebrow">
+            <span>[ 03 / PIĘĆ WARSTW STOŁU MONTAŻOWEGO ]</span>
+            <span>PRZEWIJANIE POZIOME SYNCHRONIZOWANE</span>
+          </div>
+
+          <div class="horiz-header-row">
+            <h2 class="display-h2" id="system-heading">
+              Architektura, w której każda decyzja AI pozostaje edytowalna.
+            </h2>
+
+            <!-- Interactive Quick-Jump Stage Selector -->
+            <div class="horiz-nav-pills" role="group" aria-label="Warstwy systemu Zora Studio">
+              <button type="button" class="h-stage-btn is-active" data-h-index="0">01 Struktura</button>
+              <button type="button" class="h-stage-btn" data-h-index="1">02 Kadrowanie</button>
+              <button type="button" class="h-stage-btn" data-h-index="2">03 Typografia</button>
+              <button type="button" class="h-stage-btn" data-h-index="3">04 Akustyka</button>
+              <button type="button" class="h-stage-btn" data-h-index="4">05 Archiwum</button>
+            </div>
+          </div>
+
+          <!-- Animated SVG Signal Progress Line -->
+          <div class="signal-line-wrap" aria-hidden="true">
+            <svg viewBox="0 0 1000 12" preserveAspectRatio="none" class="signal-svg">
+              <line x1="0" y1="6" x2="1000" y2="6" class="signal-bg" />
+              <line x1="0" y1="6" x2="1000" y2="6" class="signal-fg" id="horizSignalLine" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Horizontal Cinema Track -->
+        <div class="horizontal-viewport">
+          <div class="horizontal-track" id="horizontalTrack">
+            <!-- Panel 01 -->
+            <article class="h-panel">
+              <div class="h-panel-visual">
+                <img src="assets/media/shot-structure.png" alt="Warstwa 01: Mapa struktury i napięcia rozmowy w Zora Studio" class="h-parallax-img" width="1100" height="688">
+                <span class="h-badge">WARSTWA 01 // DEKONSTRUKCJA</span>
+              </div>
+              <div class="h-panel-copy">
+                <span class="h-num">01 / 05</span>
+                <h3>Mapa napięcia semantycznego</h3>
+                <p>Wielogodzinny materiał zostaje podzielony na rozdziały z oceną gęstości argumentacji, wskazując najciekawsze fragmenty bez ręcznego przesłuchiwania.</p>
+              </div>
+            </article>
+
+            <!-- Panel 02 -->
+            <article class="h-panel">
+              <div class="h-panel-visual">
+                <img src="assets/media/shot-editor.png" alt="Warstwa 02: Nieliniowy stół montażowy i śledzenie kadru 9:16" class="h-parallax-img" width="1100" height="688">
+                <span class="h-badge">WARSTWA 02 // GEOMETRIA</span>
+              </div>
+              <div class="h-panel-copy">
+                <span class="h-num">02 / 05</span>
+                <h3>Nieliniowy stół montażowy i Split-Screen</h3>
+                <p>Zmiana proporcji z 16:9 na 9:16 natychmiast przelicza trajektorię wirtualnej kamery oraz automatyczny podział ekranu na dwóch rozmówców.</p>
+              </div>
+            </article>
+
+            <!-- Panel 03 -->
+            <article class="h-panel">
+              <div class="h-panel-visual">
+                <img src="assets/media/shot-text.png" alt="Warstwa 03: Montaż poprzez tekst i stylizacja napisów" class="h-parallax-img" width="1100" height="688">
+                <span class="h-badge">WARSTWA 03 // SŁOWO</span>
+              </div>
+              <div class="h-panel-copy">
+                <span class="h-num">03 / 05</span>
+                <h3>Montaż przez transkrypcję w 90+ językach</h3>
+                <p>Wykreślenie zdania w tekście automatycznie przycina ścieżkę wideo na osi czasu, zachowując naturalny rytm oddechu i animowane napisy.</p>
+              </div>
+            </article>
+
+            <!-- Panel 04 -->
+            <article class="h-panel">
+              <div class="h-panel-visual">
+                <img src="assets/media/shot-audio.png" alt="Warstwa 04: Moduł separacji i masteringu audio" class="h-parallax-img" width="1100" height="688">
+                <span class="h-badge">WARSTWA 04 // DŹWIĘK</span>
+              </div>
+              <div class="h-panel-copy">
+                <span class="h-num">04 / 05</span>
+                <h3>Izolacja głosu i mastering emisyjny</h3>
+                <p>Oczyszczanie mowy z pogłosu, kompresja dynamiki oraz automatyczne wyciszanie ścieżki muzycznej pod głosem lektora lub gościa.</p>
+              </div>
+            </article>
+
+            <!-- Panel 05 -->
+            <article class="h-panel">
+              <div class="h-panel-visual">
+                <img src="assets/media/shot-dashboard.png" alt="Warstwa 05: Centralne repozytorium projektów i zespołów" class="h-parallax-img" width="1100" height="688">
+                <span class="h-badge">WARSTWA 05 // REPOZYTORIUM</span>
+              </div>
+              <div class="h-panel-copy">
+                <span class="h-num">05 / 05</span>
+                <h3>Zarządzanie seriami i szablony marek</h3>
+                <p>Spójne systemy typograficzne, wersjonowanie cięć i błyskawiczna dystrybucja gotowych pakietów wideo dla całych redakcji.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom JS Feature #3: Interactive Throughput Simulator -->
+      <div class="container simulator-wrap">
+        <div class="simulator-card js-reveal-fade" aria-labelledby="sim-heading">
+          <div class="sim-header">
+            <div>
+              <span class="sim-kicker">INTERAKTYWNY KALKULATOR PRZEPUSTOWOŚCI</span>
+              <h3 id="sim-heading">Symulacja uzysku czasowego dla Twojej redakcji</h3>
+            </div>
+            <p>Przesuń suwak długości nagrania i wybierz docelowe formaty obrazu, aby przeliczyć parametry potoku.</p>
+          </div>
+
+          <div class="sim-body">
+            <div class="sim-controls">
+              <div class="sim-field">
+                <div class="sim-label-row">
+                  <label for="durationRange">Długość surowego nagrania</label>
+                  <output for="durationRange" id="durationOutput" class="sim-readout">90 min</output>
+                </div>
+                <input type="range" id="durationRange" min="15" max="240" step="15" value="90" class="sim-slider">
+                <div class="sim-ticks" aria-hidden="true">
+                  <span>15m</span><span>60m</span><span>120m</span><span>180m</span><span>240m</span>
+                </div>
+              </div>
+
+              <div class="sim-field">
+                <span class="sim-label-text">Aktywne formaty wyjściowe</span>
+                <div class="sim-ratios" role="group" aria-label="Wybór formatów eksportu">
+                  <button type="button" class="ratio-chip is-selected" data-ratio="9:16" aria-pressed="true">9:16 Pion</button>
+                  <button type="button" class="ratio-chip is-selected" data-ratio="1:1" aria-pressed="true">1:1 Kwadrat</button>
+                  <button type="button" class="ratio-chip" data-ratio="16:9" aria-pressed="false">16:9 Poziom</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sim-metrics" aria-live="polite">
+              <div class="sim-metric-cell">
+                <span class="sm-label">GOTOWE SEKWENCJE</span>
+                <span class="sm-val" id="estClips">14 – 18</span>
+                <span class="sm-sub">wyodrębnionych form z puentą</span>
+              </div>
+              <div class="sim-metric-cell">
+                <span class="sm-label">CZAS RENDEROWANIA</span>
+                <span class="sm-val" id="estCompute">~4.5 min</span>
+                <span class="sm-sub">analiza + kadrowanie + napisy</span>
+              </div>
+              <div class="sim-metric-cell">
+                <span class="sm-label">ODZYSKANY CZAS ZESPOŁU</span>
+                <span class="sm-val sm-accent" id="estSaved">12.9 godz.</span>
+                <span class="sm-sub">wobec ręcznego montażu NLE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT V: VELOCITY MARQUEE + SELF-DRAWING SWISS NUMBERS (#dane)
+         ===================================================================== -->
+    <div class="velocity-marquee" aria-hidden="true">
+      <div class="marquee-row" id="marqueeRow1">
+        <span>DEKONSTRUKCJA 4K 60FPS</span><i>✦</i>
+        <span>ŚLEDZENIE WEKTOROWE 9:16</span><i>✦</i>
+        <span>SYNCHRONIZACJA SYLABOWA 90+ JĘZYKÓW</span><i>✦</i>
+        <span>NORMA EMISYJNA -14 LUFS</span><i>✦</i>
+        <span>DEKONSTRUKCJA 4K 60FPS</span><i>✦</i>
+        <span>ŚLEDZENIE WEKTOROWE 9:16</span><i>✦</i>
+        <span>SYNCHRONIZACJA SYLABOWA 90+ JĘZYKÓW</span><i>✦</i>
+        <span>NORMA EMISYJNA -14 LUFS</span><i>✦</i>
+      </div>
+    </div>
+
+    <section class="act-numbers" id="dane" aria-labelledby="dane-heading">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>[ 04 / PARAMETRY I SKALA INŻYNIERYJNA ]</span>
+          <span>POMIARY POTOKU CHMUROWEGO</span>
+        </div>
+
+        <h2 class="display-h2 numbers-lead js-reveal-lines" id="dane-heading">
+          Skala mierzona w klatkach na sekundę, decybelach i odzyskanych godzinach.
+        </h2>
+
+        <div class="swiss-grid" id="swissGrid">
+          <article class="swiss-cell">
+            <span class="draw-border-top" aria-hidden="true"></span>
+            <span class="draw-border-right" aria-hidden="true"></span>
+            <div class="sc-head"><span>01 / JĘZYKI</span><span>TRANSKRYPCJA</span></div>
+            <div class="sc-giant"><span class="js-counter" data-target="90">90</span><em>+</em></div>
+            <h3>Języków rozpoznawanych natywnie</h3>
+            <p>Precyzyjne znaczniki czasu dla każdej sylaby, uwzględniające polską fleksję i terminologię branżową.</p>
+          </article>
+
+          <article class="swiss-cell">
+            <span class="draw-border-top" aria-hidden="true"></span>
+            <span class="draw-border-right" aria-hidden="true"></span>
+            <div class="sc-head"><span>02 / OPTYKA</span><span>ROZDZIELCZOŚĆ</span></div>
+            <div class="sc-giant"><span class="js-counter" data-target="4">4</span><em>K</em></div>
+            <h3>Bezstratny potok wejściowy 60 fps</h3>
+            <p>Wykadrowanie pionu 1080×1920 z szerokiego planu 4K UHD zachowuje pełną ostrość bez rozmycia.</p>
+          </article>
+
+          <article class="swiss-cell">
+            <span class="draw-border-top" aria-hidden="true"></span>
+            <span class="draw-border-right" aria-hidden="true"></span>
+            <div class="sc-head"><span>03 / PRĘDKOŚĆ</span><span>ANALIZA 1H WIDEO</span></div>
+            <div class="sc-giant"><span class="js-counter" data-target="180">180</span><em>s</em></div>
+            <h3>Średni czas analizy godziny rozmowy</h3>
+            <p>Równoległe przetwarzanie GPU skraca wielogodzinne przeglądanie surówki do trzech minut.</p>
+          </article>
+
+          <article class="swiss-cell">
+            <span class="draw-border-top" aria-hidden="true"></span>
+            <span class="draw-border-right" aria-hidden="true"></span>
+            <div class="sc-head"><span>04 / AKUSTYKA</span><span>MASTERING</span></div>
+            <div class="sc-giant"><span>-</span><span class="js-counter" data-target="14">14</span><em>LUFS</em></div>
+            <h3>Znormalizowana głośność emisyjna</h3>
+            <p>Każdy wyeksportowany plik spełnia wymogi głośności współczesnych platform wideo bez przesterowań.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT VI: SMOOTH ANIMATED TECHNICAL ACCORDION (#specyfikacja)
+         ===================================================================== -->
+    <section class="act-faq" id="specyfikacja" aria-labelledby="faq-heading">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>[ 05 / DOKUMENTACJA I PYTANIA TECHNICZNE ]</span>
+          <span>SPECYFIKACJA POTOKU</span>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq-intro">
+            <h2 class="display-h2 js-reveal-lines" id="faq-heading">
+              Szczegóły techniczne dla twórców i inżynierów emisji.
+            </h2>
+            <p class="editorial-copy">
+              Sprawdź, jak działają nasze modele selekcji narracyjnej, obsługa kodeków studyjnych oraz ochrona materiałów przed publikacją.
+            </p>
+            <a href="https://zora-labs.com" target="_blank" rel="noopener noreferrer" class="outline-pill-cta" data-magnetic>
+              <span>Przejdź do aplikacji zora-labs.com</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <div class="faq-accordion" id="specAccordion">
+            <div class="faq-item is-open">
+              <h3 class="faq-q-wrap">
+                <button type="button" class="faq-trigger" aria-expanded="true" aria-controls="faq-p1" id="faq-b1">
+                  <span class="faq-idx">01</span>
+                  <span class="faq-q">Jak Zora Labs odróżnia wartościową myśl od przypadkowej dygresji?</span>
+                  <span class="faq-plus" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-panel" id="faq-p1" role="region" aria-labelledby="faq-b1">
+                <div class="faq-panel-inner">
+                  <p>Łączymy analizę semantyczną transkrypcji z badaniem cech akustycznych głosu — zmian tempa, pauz retorycznych oraz energii wypowiedzi. Wyodrębniona sekwencja posiada wyraźne otwarcie, rozwinięcie i zamkniętą puentę.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q-wrap">
+                <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="faq-p2" id="faq-b2">
+                  <span class="faq-idx">02</span>
+                  <span class="faq-q">Co dzieje się z kadrem 9:16 podczas dynamicznej rozmowy dwóch osób?</span>
+                  <span class="faq-plus" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-panel" id="faq-p2" role="region" aria-labelledby="faq-b2" hidden>
+                <div class="faq-panel-inner">
+                  <p>System unika chaotycznego przeskakiwania kamery. Gdy dwóch gości wchodzi w szybką interakcję, kompozycja automatycznie przechodzi w dwudzielny układ pionowy (Split-Screen), utrzymując obie twarze w kadrze.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q-wrap">
+                <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="faq-p3" id="faq-b3">
+                  <span class="faq-idx">03</span>
+                  <span class="faq-q">Czy mogę ręcznie skorygować cięcia i napisy przed eksportem?</span>
+                  <span class="faq-plus" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-panel" id="faq-p3" role="region" aria-labelledby="faq-b3" hidden>
+                <div class="faq-panel-inner">
+                  <p>Tak. Każda wygenerowana propozycja otwiera się w przeglądarkowym stole montażowym Zora Studio, gdzie możesz z dokładnością co do klatki przesunąć cięcie, poprawić tekst, zmienić krój pisma lub dodać własne ujęcia B-roll.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <h3 class="faq-q-wrap">
+                <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="faq-p4" id="faq-b4">
+                  <span class="faq-idx">04</span>
+                  <span class="faq-q">Jakie kontenery i kodeki wideo są wspierane na wejściu i wyjściu?</span>
+                  <span class="faq-plus" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq-panel" id="faq-p4" role="region" aria-labelledby="faq-b4" hidden>
+                <div class="faq-panel-inner">
+                  <p>Obsługujemy pliki MP4, MOV oraz WebM (H.264, HEVC/H.265, Apple ProRes) w rozdzielczości do 4K 60 fps. Eksport dostarcza zoptymalizowane pliki MP4 (High Profile, AAC 320 kbps) oraz pliki napisów SRT i VTT.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT VII: FINALE & VALIDATED ARCHITECTURAL CONTACT (#kontakt)
+         ===================================================================== -->
+    <section class="act-contact" id="kontakt" aria-labelledby="kontakt-heading">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>[ 06 / KONTAKT I WDROŻENIA REDAKCYJNE ]</span>
+          <span>ZORA LABS · WARSZAWA</span>
+        </div>
+
+        <div class="contact-layout">
+          <div class="contact-left">
+            <h2 class="display-h2 js-reveal-lines" id="kontakt-heading">
+              Zbudujmy potok wideo dopasowany do Twojej skali.
+            </h2>
+            <p class="editorial-copy">
+              Wspieramy twórców podcastów, redakcje publicystyczne, domy produkcyjne i zespoły komunikacji. Prześlij parametry swoich nagrań, a przygotujemy dedykowane środowisko testowe.
+            </p>
+
+            <dl class="contact-channels">
+              <div>
+                <dt>APLIKACJA WEBOWA</dt>
+                <dd><a href="https://zora-labs.com" target="_blank" rel="noopener noreferrer">https://zora-labs.com ↗</a></dd>
+              </div>
+              <div>
+                <dt>KONTAKT INŻYNIERYJNY</dt>
+                <dd><a href="mailto:hello@zora-labs.com">hello@zora-labs.com</a></dd>
+              </div>
+              <div>
+                <dt>STUDIO</dt>
+                <dd>Warszawa, Polska (UTC+1)</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="contact-right">
+            <form id="contactForm" class="studio-form" novalidate>
+              <div class="f-group">
+                <label for="senderName" class="f-label">01 / Imię i nazwisko lub redakcja *</label>
+                <input
+                  type="text"
+                  id="senderName"
+                  name="senderName"
+                  class="f-input"
+                  placeholder="np. Anna Nowak — Studio Debat"
+                  required
+                  minlength="2"
+                  aria-describedby="nameError"
+                >
+                <span class="f-error" id="nameError" role="alert"></span>
+              </div>
+
+              <div class="f-group">
+                <label for="senderEmail" class="f-label">02 / Służbowy adres e-mail *</label>
+                <input
+                  type="email"
+                  id="senderEmail"
+                  name="senderEmail"
+                  class="f-input"
+                  placeholder="anna@redakcja.pl"
+                  required
+                  aria-describedby="emailError"
+                >
+                <span class="f-error" id="emailError" role="alert"></span>
+              </div>
+
+              <div class="f-group">
+                <label for="workflowType" class="f-label">03 / Główny format materiałów *</label>
+                <select id="workflowType" name="workflowType" class="f-select" required aria-describedby="workflowError">
+                  <option value="">Wybierz profil produkcji...</option>
+                  <option value="podcast">Podcast wideo / rozmowy studyjne (1–3 godz.)</option>
+                  <option value="newsroom">Redakcja publicystyczna / programy na żywo</option>
+                  <option value="conference">Konferencje, prelekcje i materiały edukacyjne</option>
+                  <option value="api">Integracja API / wdrożenie dedykowane</option>
+                </select>
+                <span class="f-error" id="workflowError" role="alert"></span>
+              </div>
+
+              <div class="f-group">
+                <label for="senderMessage" class="f-label">04 / Wolumen nagrań i oczekiwania *</label>
+                <textarea
+                  id="senderMessage"
+                  name="senderMessage"
+                  class="f-textarea"
+                  rows="4"
+                  placeholder="Opisz krótko ile godzin wideo nagrywacie miesięcznie oraz na jakie platformy publikujecie..."
+                  required
+                  minlength="15"
+                  aria-describedby="messageError"
+                ></textarea>
+                <span class="f-error" id="messageError" role="alert"></span>
+              </div>
+
+              <div class="f-actions">
+                <button type="submit" class="f-submit" data-magnetic>
+                  <span>Wyślij specyfikację</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+                <span class="f-draft" id="draftStatus" aria-live="polite">Auto-zapis szkicu aktywny</span>
+              </div>
+
+              <div class="f-feedback" id="formFeedback" role="status" aria-live="polite" hidden></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Minimal Architectural Colophon Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-columns">
+        <div class="f-col-brand">
+          <img src="assets/img/zora-logo.svg" alt="Logo Zora Labs" class="footer-logo" width="120" height="45">
+          <p>Studio inżynierii obrazu i dźwięku. Automatyczna transformacja długich nagrań w krótkie formy filmowe.</p>
+        </div>
+
+        <nav class="f-col-links" aria-label="Nawigacja w stopce">
+          <span class="f-col-head">ROZDZIAŁY</span>
+          <ul>
+            <li><a href="#proces">01 / Proces 3D</a></li>
+            <li><a href="#manifest">02 / Manifest</a></li>
+            <li><a href="#archiwum">03 / Sekwencje</a></li>
+            <li><a href="#system">04 / Studio</a></li>
+            <li><a href="#dane">05 / Skala</a></li>
+            <li><a href="#specyfikacja">06 / Dokumentacja</a></li>
+          </ul>
+        </nav>
+
+        <div class="f-col-links">
+          <span class="f-col-head">ODNOŚNIKI ZEWNĘTRZNE</span>
+          <ul>
+            <li><a href="https://zora-labs.com" target="_blank" rel="noopener noreferrer">Platforma zora-labs.com ↗</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API" target="_blank" rel="noopener noreferrer">Specyfikacja WebGL API ↗</a></li>
+            <li><a href="https://ebu.ch/publications/r128" target="_blank" rel="noopener noreferrer">Norma głośności EBU R128 ↗</a></li>
+          </ul>
+        </div>
+
+        <div class="f-col-end">
+          <button type="button" class="top-glide-btn" id="backToTop" data-magnetic aria-label="Przewiń płynnie na początek strony">
+            <span>Na początek</span>
+            <span aria-hidden="true">↑</span>
+          </button>
+          <span class="f-copy">© 2026 Zora Labs. Wszystkie prawa zastrzeżone.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Full-Resolution Cinema Frame Inspector Modal -->
+  <div class="inspector-modal" id="inspectorModal" role="dialog" aria-modal="true" aria-labelledby="inspectorTitle" aria-hidden="true" hidden>
+    <div class="inspector-backdrop" id="inspectorBackdrop"></div>
+    <div class="inspector-window">
+      <div class="inspector-header">
+        <div>
+          <span class="inspector-tag">INSPEKTOR KLATKI // ZORA LABS</span>
+          <h3 id="inspectorTitle">Podgląd sekwencji</h3>
+        </div>
+        <button type="button" class="inspector-close" id="inspectorClose" aria-label="Zamknij okno podglądu">
+          ZAMKNIJ [ESC]
+        </button>
+      </div>
+      <div class="inspector-stage" id="inspectorBody"></div>
+      <div class="inspector-footer">
+        <span id="inspectorMeta"></span>
+        <a href="https://zora-labs.com" target="_blank" rel="noopener noreferrer">Edytuj w Zora Studio ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local Vendor Libraries + Custom Scrollytelling Scripts -->
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/vendor/lenis.min.js"></script>
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/webgl-scene.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/animations.js"></script>
+</body>
+</html>
