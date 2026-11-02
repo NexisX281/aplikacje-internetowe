@@ -1,0 +1,6 @@
+# Archiwa ZIP na Moodle
+*.zip
+
+# Pliki systemowe
+Thumbs.db
+.DS_Store
